@@ -3,11 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Organic.Views.LoginPage"
              BindingContext="{Binding Main, Source={StaticResource Locator}}"
-             Title="Aqui poner Nombre Empresa">
+             Title="Login">
     <ContentPage.Content>
-        <ScrollView>
+        <ScrollView
+            BindingContext="{Binding Login}">
             <StackLayout
-            Padding="10,20,10,5">
+            Padding="10,0">
                 <Label
                 FontAttributes="Bold"
                 FontSize="Large"
@@ -16,7 +17,7 @@
                 </Label>
                 <Image
                 Source="verduras.jpg"
-                WidthRequest="200">
+                WidthRequest="150">
                 </Image>
                 <Grid
                 Margin="0,20">
@@ -26,14 +27,15 @@
                     </Grid.ColumnDefinitions>
                 <Label
                     Grid.Row="0"
-                    Grid.Column="0"
-                    Text="E-mail"
+                    Grid.Column="0"                    
+                    Text="E-Mail"
                     VerticalOptions="Center">
                 </Label>
                 <Entry
                     Grid.Row="0"
                     Grid.Column="1"
                     Keyboard="Email"
+                    Text="{Binding Email, Mode=TwoWay}"
                     Placeholder="Enter your Email">
                 </Entry>
                 <Label
@@ -46,27 +48,38 @@
                     Grid.Row="1"
                     Grid.Column="1"
                     IsPassword="True"
+                    Text="{Binding Password,Mode=TwoWay}"
                     Placeholder="Enter your Password">
                 </Entry>
                 </Grid>
+                <ActivityIndicator
+                    IsRunning="{Binding IsRunning,Mode=TwoWay}"
+                    VerticalOptions="CenterAndExpand">                    
+                </ActivityIndicator>
                 <Label
                     HorizontalOptions="Center"                    
                     Text="Forgot your Password ?"
                     TextColor="Blue">
                 </Label>
-                <StackLayout                
+                <StackLayout 
+                    Orientation="Horizontal"
+                    HorizontalOptions="Center"
                     Margin="50,0">
                 <Button
                     BackgroundColor="DarkOrange"
                     BorderRadius="20"
-                    HeightRequest="46"
+                    Command="{Binding LoginCommand}"
+                    HeightRequest="50"
+                    IsEnabled="{Binding IsEnabled,Mode=TwoWay}"
                     TextColor="White"
                     Text="Iniciar Sesion">
                 </Button>
                 <Button
                     BackgroundColor="Orange"
-                    BorderRadius="20"                                
+                    BorderRadius="20"
+                    HeightRequest="50"
                     TextColor="White"
+                    IsEnabled="{Binding IsEnabled,Mode=TwoWay}"
                     Text="Registrarse">
                 </Button>
                 </StackLayout>
