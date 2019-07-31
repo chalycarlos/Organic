@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
 
 
 namespace Organic.ViewModels
 {
-    using GalaSoft.MvvmLight.Command;    
+    using GalaSoft.MvvmLight.Command;
+    using Organic.Views;
     using System.Windows.Input;
     using Xamarin.Forms;
 
@@ -14,11 +13,16 @@ namespace Organic.ViewModels
     {        
         #region Attributes        
         private bool isRunning;
+        private string email;
         private string password;
         private bool isEnabled;
         #endregion
         #region Properties
-        public string Email { get; set; }
+        public string Email
+        {
+            get { return this.email; }
+            set { SetValue(ref this.email, value); }
+        }
 
         public string Password
         {
@@ -91,10 +95,12 @@ namespace Organic.ViewModels
             }
             this.IsRunning = false;
             this.IsEnabled = true;
-            await Application.Current.MainPage.DisplayAlert(
-                   "Ok",
-                   "Good Done",
-                   "Accept");
+
+            this.Email = string.Empty;
+            this.Password = string.Empty;
+
+            MainViewModel.GetInstance().Catalogo = new CatalogoViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new CatalogoPage());
         }
         #endregion
     }

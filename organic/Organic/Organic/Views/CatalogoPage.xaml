@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Organic.Views.CatalogoPage"
+              BindingContext="{Binding Main, Source={StaticResource Locator}}"
+             Title="Catalogo">
+    <ContentPage.Content>
+        <StackLayout
+            BindingContext="{Binding Catalogo}"
+            Padding="5,0">
+            <Label
+                FontSize="Large"
+                Text="CATALOGO">
+                
+            </Label>
+            
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
