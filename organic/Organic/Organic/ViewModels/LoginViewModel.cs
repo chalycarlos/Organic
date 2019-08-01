@@ -47,6 +47,8 @@ namespace Organic.ViewModels
         public LoginViewModel()
         {
             this.IsEnabled = true;
+            this.Email = "chaly.com";
+            this.Password = "123";
         }
         #endregion
 
