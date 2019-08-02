@@ -12,7 +12,9 @@
                 FontSize="Large"
                 Text="CATALOGO">                
             </Label>
-            
+            <ListView
+                ItemsSource="{Binding Vegetables}">                
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
