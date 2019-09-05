@@ -6,11 +6,15 @@ namespace Organic.ViewModels
     using GalaSoft.MvvmLight.Command;
     using Organic.Views;
     using System.Windows.Input;
+    using Services;
     using Xamarin.Forms;
 
-    public class LoginViewModel:BaseViewModel
-        
-    {        
+    public class LoginViewModel:BaseViewModel        
+    {
+        #region Services
+        private ApiService apiService;
+        #endregion
+
         #region Attributes        
         private bool isRunning;
         private string email;
@@ -46,9 +50,9 @@ namespace Organic.ViewModels
         #region Constructors
         public LoginViewModel()
         {
-            this.IsEnabled = true;
-            this.Email = "chaly.com";
-            this.Password = "123";
+            this.apiService = new ApiService();
+
+            this.IsEnabled = true;            
         }
         #endregion
 
@@ -84,25 +88,59 @@ namespace Organic.ViewModels
             this.IsRunning = true;
             this.IsEnabled = false;
 
-            if (this.Email != "chaly.com" || this.Password != "123")
+            var connection = await this.apiService.CheckConnection();
+
+            if (!connection.IsSuccess)
             {
                 this.IsRunning = false;
                 this.IsEnabled = true;
                 await Application.Current.MainPage.DisplayAlert(
-                    "Error",
-                    "Email or Password are Incorrects",                    
-                    "Accept");
+                   "Error",
+                   connection.Message,
+                   "Accept");
+                return;
+            }
+
+            var token = await this.apiService.GetToken(
+                "https://organicapi1.azurewebsites.net", 
+                this.Email, 
+                this.Password);
+
+            if (token ==null)
+            {
+                this.IsRunning = false;
+                this.IsEnabled = true;
+                await Application.Current.MainPage.DisplayAlert(
+                   "Error",
+                   "Something was wrong, please try later.",
+                   "Accept");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(token.AccessToken))
+            {
+                this.IsRunning = false;
+                this.IsEnabled = true;
+                await Application.Current.MainPage.DisplayAlert(
+                   "Error",
+                   token.ErrorDescription,
+                   "Accept");
                 this.Password = string.Empty;
                 return;
             }
+
+            var mainViewModel = MainViewModel.GetInstance();
+            mainViewModel.Token = token;
+            mainViewModel.Catalogo = new CatalogoViewModel();
+            await Application.Current.MainPage.Navigation.PushAsync(new CatalogoPage());
+
             this.IsRunning = false;
             this.IsEnabled = true;
 
             this.Email = string.Empty;
             this.Password = string.Empty;
 
-            MainViewModel.GetInstance().Catalogo = new CatalogoViewModel();
-            await Application.Current.MainPage.Navigation.PushAsync(new CatalogoPage());
+            
         }
         #endregion
     }

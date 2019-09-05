@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Organic.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,6 +7,19 @@ namespace Organic.ViewModels
 {
     public class MainViewModel
     {
+        #region Properties
+        public List<CatalogoViewModel> LandsList
+        {
+            get;
+            set;
+        }
+        public TokenResponse Token
+        {
+            get;
+            set;
+        }
+        #endregion
+
         #region ViewModels
         public LoginViewModel Login
         {
